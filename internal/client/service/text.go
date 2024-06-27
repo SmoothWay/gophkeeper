@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"log/slog"
 
+	"github.com/SmoothWay/gophkeeper/pkg/logger"
 	"github.com/SmoothWay/gophkeeper/pkg/models"
 )
 
@@ -23,7 +24,7 @@ func (s *Keeper) saveText(ctx context.Context, text models.Text) error {
 
 	if _, err := s.textStore.ByKey(ctx, text.Key); err == nil {
 		if err = s.textStore.Update(ctx, text); err != nil {
-			log.Error("update text err", sl.Err(err))
+			log.Error("update text err", logger.Err(err))
 			return fmt.Errorf("%s: %w", op, ErrInternal)
 		}
 
@@ -31,7 +32,7 @@ func (s *Keeper) saveText(ctx context.Context, text models.Text) error {
 	}
 
 	if err := s.textStore.Save(ctx, text); err != nil {
-		log.Error("save text err", sl.Err(err))
+		log.Error("save text err", logger.Err(err))
 		return fmt.Errorf("%s: %w", op, ErrInternal)
 	}
 
@@ -46,7 +47,7 @@ func (s *Keeper) AllText(ctx context.Context) ([]models.Text, error) {
 
 	list, err := s.textStore.All(ctx)
 	if err != nil {
-		log.Error("query all text items error", sl.Err(err))
+		log.Error("query all text items error", logger.Err(err))
 		return nil, fmt.Errorf("%s: %w", op, ErrInternal)
 	}
 

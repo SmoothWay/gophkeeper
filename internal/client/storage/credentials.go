@@ -3,6 +3,7 @@ package storage
 import (
 	"context"
 	"database/sql"
+	"errors"
 	"fmt"
 	"time"
 
@@ -54,6 +55,32 @@ func (s *Credentials) All(ctx context.Context) ([]models.Credentials, error) {
 	}
 
 	return res, nil
+}
+
+func (s *Credentials) ByLogin(ctx context.Context, login string) (models.Credentials, error) {
+	const op = "storage.sqlite.Credentials.ByLogin"
+
+	newCtx, cancel := context.WithTimeout(ctx, s.timeout)
+	defer cancel()
+
+	stmt, err := s.db.Prepare("SELECT tag, login, password, comment, created_at FROM credentials WHERE login = ?")
+	if err != nil {
+		return models.Credentials{}, fmt.Errorf("%s: %w", op, err)
+	}
+
+	row := stmt.QueryRowContext(newCtx, login)
+
+	cred := models.Credentials{Type: models.CredItem}
+	err = row.Scan(&cred.Tag, &cred.Login, &cred.Password, &cred.Comment, &cred.Created)
+	if err != nil {
+		if errors.Is(err, sql.ErrNoRows) {
+			return models.Credentials{}, fmt.Errorf("%s, %w", op, ErrItemNotFound)
+		}
+
+		return models.Credentials{}, fmt.Errorf("%s: %w", op, err)
+	}
+
+	return cred, nil
 }
 
 func (s *Credentials) Save(ctx context.Context, cred models.Credentials) error {

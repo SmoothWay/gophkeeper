@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"log/slog"
 
+	"github.com/ShiraazMoollatjie/goluhn"
 	"github.com/SmoothWay/gophkeeper/pkg/logger"
 	"github.com/SmoothWay/gophkeeper/pkg/models"
 )

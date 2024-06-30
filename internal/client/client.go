@@ -21,10 +21,10 @@ import (
 	viewlogin "github.com/SmoothWay/gophkeeper/internal/client/cli/view_login"
 	viewregister "github.com/SmoothWay/gophkeeper/internal/client/cli/view_register"
 	"github.com/SmoothWay/gophkeeper/internal/client/config"
+	"github.com/SmoothWay/gophkeeper/internal/client/grpcclient"
 	"github.com/SmoothWay/gophkeeper/internal/client/service"
 	"github.com/SmoothWay/gophkeeper/internal/client/storage"
 	"github.com/SmoothWay/gophkeeper/internal/client/ws"
-	"github.com/SmoothWay/gophkeeper/internal/grpcclient"
 	"github.com/SmoothWay/gophkeeper/pkg/logger"
 	"github.com/SmoothWay/gophkeeper/pkg/models"
 )

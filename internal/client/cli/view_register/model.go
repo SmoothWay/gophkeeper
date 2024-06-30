@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/SmoothWay/gophkeeper/internal/grpcclient"
+	"github.com/SmoothWay/gophkeeper/internal/client/grpcclient"
 	"github.com/charmbracelet/bubbles/cursor"
 	"github.com/charmbracelet/bubbles/textinput"
 	tea "github.com/charmbracelet/bubbletea"

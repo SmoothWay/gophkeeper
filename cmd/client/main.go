@@ -8,6 +8,7 @@ import (
 	"syscall"
 
 	"github.com/SmoothWay/gophkeeper/internal/client"
+	"github.com/SmoothWay/gophkeeper/internal/client/config"
 	"github.com/SmoothWay/gophkeeper/pkg/logger"
 )
 
@@ -18,9 +19,12 @@ var (
 
 func main() {
 	log := logger.NewLogger()
+	cfg := config.MustLoad()
+	log.Debug("starting client application", slog.Any("config", cfg))
 	ctx, cancel := context.WithCancel(context.Background())
+	defer cancel()
 
-	app := client.NewAppClient()
+	app := client.NewAppClient(log, cfg)
 	stop := make(chan os.Signal, 1)
 	go app.Run(ctx, stop)
 
@@ -29,7 +33,6 @@ func main() {
 	sign := <-stop
 	log.Debug("stopping application", slog.String("signal", sign.String()))
 
-	cancel()
 	app.Stop()
 
 	log.Debug("application stopped")

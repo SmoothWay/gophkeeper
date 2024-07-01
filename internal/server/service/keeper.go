@@ -6,6 +6,8 @@ import (
 	"fmt"
 	"log/slog"
 
+	"github.com/SmoothWay/gophkeeper/internal/server/storage"
+	"github.com/SmoothWay/gophkeeper/pkg/logger"
 	"github.com/SmoothWay/gophkeeper/pkg/models"
 )
 
@@ -46,7 +48,7 @@ func (s *Service) Snapshot(ctx context.Context, userID int64) (models.Message, e
 	if err != nil {
 		log.Error(
 			"query snapshot error",
-			sl.Err(err),
+			logger.Err(err),
 		)
 		return models.Message{}, fmt.Errorf("%s: %w", op, ErrMakeSnapshot)
 	}
@@ -67,7 +69,7 @@ func (s *Service) Save(ctx context.Context, userID int64, msg models.Message) er
 			"saving new item error",
 			slog.String("item type", item.Kind),
 			slog.String("item key", item.Key),
-			sl.Err(err),
+			logger.Err(err),
 		)
 		return ErrInternal
 	}

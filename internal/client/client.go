@@ -36,6 +36,7 @@ var (
 )
 
 type AppClient struct {
+	ch           chan models.Message
 	grpcClient   *grpcclient.GRPCClient
 	keeper       *service.Keeper
 	log          *slog.Logger
@@ -62,7 +63,7 @@ func (app *AppClient) Run(ctx context.Context, stop chan os.Signal) {
 		slog.String("op", op),
 	)
 
-	// app.ch = make(chan models.Message)
+	app.ch = make(chan models.Message)
 
 	err := storage.Migrate(app.storagePath)
 	if err != nil {
@@ -101,8 +102,7 @@ func (app *AppClient) Run(ctx context.Context, stop chan os.Signal) {
 		stop <- syscall.SIGTERM
 		return
 	}
-	ch := make(chan models.Message)
-	app.keeper = service.NewKeeper(log, ch, dbCred, dbText, dbBin, dbCard)
+	app.keeper = service.NewKeeper(log, app.ch, dbCred, dbText, dbBin, dbCard)
 
 	app.grpcClient, err = grpcclient.NewGRPCClient(app.grpcAddress)
 	if err != nil {
@@ -141,7 +141,7 @@ func (app *AppClient) Run(ctx context.Context, stop chan os.Signal) {
 		return
 	}
 
-	wsClient := ws.NewWSClient(log, ch, app.keeper, app.WSURL)
+	wsClient := ws.NewWSClient(log, app.ch, app.keeper, app.WSURL)
 
 	// interrupt - chan for receiving signal from the websocket connection (receive error message from server)
 	interrupt := make(chan struct{})
@@ -218,6 +218,12 @@ func (app *AppClient) Run(ctx context.Context, stop chan os.Signal) {
 			}
 		}
 	}
+}
+
+func (app *AppClient) Stop() {
+	app.keeper.Stop()
+	close(app.ch)
+	app.grpcClient.Stop()
 }
 
 func (app *AppClient) registration(ctx context.Context) error {

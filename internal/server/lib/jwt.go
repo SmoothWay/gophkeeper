@@ -7,7 +7,6 @@ import (
 	"github.com/golang-jwt/jwt/v5"
 )
 
-// TODO read from env variable
 const secret = "test-secret"
 
 func ParseToken(accessToken string) (int64, error) {

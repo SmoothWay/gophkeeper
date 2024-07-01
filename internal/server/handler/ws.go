@@ -7,6 +7,7 @@ import (
 	"net/http"
 
 	"github.com/SmoothWay/gophkeeper/internal/server/clients"
+	"github.com/SmoothWay/gophkeeper/internal/server/lib"
 	"github.com/SmoothWay/gophkeeper/pkg/logger"
 	"github.com/SmoothWay/gophkeeper/pkg/models"
 	"github.com/gorilla/websocket"
@@ -62,7 +63,7 @@ func (h *Handler) Handle(w http.ResponseWriter, r *http.Request) {
 			logger.Err(err),
 		)
 		errMsg, _ := json.Marshal(models.Message{Type: "error", Value: []byte("invalid token")})
-		err = conn.WriteMessage(websocket.TextMessage, errMsg)
+		_ = conn.WriteMessage(websocket.TextMessage, errMsg)
 		_ = conn.Close()
 		return
 	}
@@ -79,7 +80,6 @@ func (h *Handler) Handle(w http.ResponseWriter, r *http.Request) {
 		err = conn.WriteMessage(websocket.TextMessage, errMsg)
 
 		if err != nil {
-			// TODO handle interrupted connection with client
 			log.Error(
 				"error sending message to user",
 				slog.Int64("user_id", userID),
@@ -91,7 +91,6 @@ func (h *Handler) Handle(w http.ResponseWriter, r *http.Request) {
 	msg, _ := json.Marshal(snapshot)
 	err = conn.WriteMessage(websocket.TextMessage, msg)
 	if err != nil {
-		// TODO handle interrupted connection with client
 		log.Error(
 			"error sending message to user",
 			slog.Int64("user_id", userID),
@@ -104,12 +103,10 @@ func (h *Handler) Handle(w http.ResponseWriter, r *http.Request) {
 		select {
 		case <-ctx.Done():
 			log.Info("client logged out")
-			// TODO clear user_id - conn map
 			return
 		default:
 			mt, data, err := conn.ReadMessage()
 			if err != nil {
-				// TODO handle interrupted connection with client
 				log.Error(
 					"error listening client connection",
 					slog.Int64("user_id", userID),
@@ -147,7 +144,6 @@ func (h *Handler) Handle(w http.ResponseWriter, r *http.Request) {
 				)
 				errMsg, _ := json.Marshal(models.Message{Type: "error", Value: []byte("invalid token")})
 				_ = conn.WriteMessage(websocket.TextMessage, errMsg)
-				// TODO clear user_id - conn map
 				return
 			}
 
@@ -183,7 +179,6 @@ func (h *Handler) sendUpdates(userID int64, msg models.Message) {
 	for _, c := range h.conns.UserCons(userID) {
 		err := c.WriteMessage(websocket.TextMessage, update)
 		if err != nil {
-			// TODO ? clear user_id - conn map
 			h.log.Error(
 				"error listening client connection",
 				slog.Int64("user_id", userID),

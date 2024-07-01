@@ -3,6 +3,7 @@ package storage
 import (
 	"database/sql"
 	"errors"
+	"fmt"
 
 	_ "github.com/mattn/go-sqlite3"
 )
@@ -18,7 +19,7 @@ func Migrate(storagePath string) error {
 		return err
 	}
 
-	err = migrate(db)
+	err = migrate(db, 1)
 	if err != nil {
 		return err
 	}
@@ -29,7 +30,7 @@ func Migrate(storagePath string) error {
 func newSQLDB(storagePath string) (*sql.DB, error) {
 	db, err := sql.Open("sqlite3", storagePath)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("failed connect to database %w", ErrInternalError)
 	}
 
 	return db, nil

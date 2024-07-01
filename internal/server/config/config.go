@@ -47,7 +47,7 @@ func MustLoad() *Config {
 // Default value is empty string.
 func configPath() string {
 	var res string
-	flag.StringVar(&res, "config", "", "path to config file")
+	flag.StringVar(&res, "config", "./config/server_config.yaml", "path to config file")
 	flag.Parse()
 
 	if res == "" {

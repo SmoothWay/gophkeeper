@@ -17,7 +17,6 @@ type App struct {
 }
 
 func Run(log *slog.Logger, cfg *config.Config) {
-	// TODO gracefull shutdown
 	db, err := storage.New(cfg.DatabaseURL, cfg.QueryTimeout)
 	if err != nil {
 		panic(err)

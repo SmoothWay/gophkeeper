@@ -1,13 +1,9 @@
 
 ## Менеджер паролей GophKeeper
 
-# Для запуска:
+### Для запуска:
 
 
 ```bash
-docker compose up -d
-
-и
-
-make
+docker compose up -d && make
 ```

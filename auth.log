@@ -1,0 +1,3 @@
+{"time":"2024-07-02T17:44:30.362785795+05:00","level":"DEBUG","msg":"starting application","config":{"DatabaseURL":"postgresql://postgres:postgres@localhost:5432/auth?sslmode=disable","TokenTTL":43200000000000,"ConnectTimeout":2000000000,"CertFile":"./keys/server-cert.pem","KeyFile":"./keys/server-key.pem","GRPC":{"Port":44044,"Timeout":5000000000}}}
+2024/07/02 17:44:30 goose: no migrations to run. current version: 1
+{"time":"2024-07-02T17:44:30.369088288+05:00","level":"ERROR","msg":"error running GRPC server","error":"auth.grpcapp.Run: listen tcp :44044: bind: address already in use"}

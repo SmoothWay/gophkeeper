@@ -124,7 +124,6 @@ func (app *AppClient) Run(ctx context.Context, stop chan os.Signal) {
 		return
 	}
 
-	// Reg
 	if modelAuth.Choice == "Register" {
 		if err := app.registration(ctx); err != nil {
 			log.Error("registration failed", logger.Err(err))
@@ -133,7 +132,6 @@ func (app *AppClient) Run(ctx context.Context, stop chan os.Signal) {
 		}
 	}
 
-	// Login
 	token, err := app.login(ctx)
 	if err != nil || token == "" {
 		log.Error("login user error", logger.Err(err))
@@ -143,7 +141,6 @@ func (app *AppClient) Run(ctx context.Context, stop chan os.Signal) {
 
 	wsClient := ws.NewWSClient(log, app.ch, app.keeper, app.WSURL)
 
-	// interrupt - chan for receiving signal from the websocket connection (receive error message from server)
 	interrupt := make(chan struct{})
 	go func(interrupt chan struct{}) {
 		<-interrupt
@@ -157,7 +154,6 @@ func (app *AppClient) Run(ctx context.Context, stop chan os.Signal) {
 		case <-ctx.Done():
 			return
 		default:
-			//show list of commands : {"Get all secrets", "Add credentials", "Add text data", "Add binary data", "Add card data"}
 			p := tea.NewProgram(view_command_list.Model{})
 			m, err := p.Run()
 			if err != nil {

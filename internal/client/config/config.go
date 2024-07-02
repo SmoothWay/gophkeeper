@@ -40,7 +40,7 @@ func MustLoad() *ClientConfig {
 func configPath() string {
 	var res string
 
-	flag.StringVar(&res, "c", "", "path to config file")
+	flag.StringVar(&res, "c", "./config/client_config.yaml", "path to config file")
 	flag.Parse()
 
 	if res == "" {

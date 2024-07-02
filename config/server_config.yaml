@@ -1,4 +1,6 @@
-database_url: "postgres://postgres:postgres@localhost:5432/keeper?sslmode=disable"
+database_url: "postgresql://postgres:postgres@localhost:5432/keeper?sslmode=disable"
+cert_file: "./keys/server.crt"
+key_file: "./keys/server.key"
 key: "s5as4d5a#$%#%s6ad545##$%#4353KSFjH"
 query_timeout: 2s
 ws:

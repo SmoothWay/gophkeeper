@@ -1,14 +1,13 @@
 version: "3.8"
 
-
 services:
   postgres:
     image: postgres:14
-    ports:
-      - 5432:5432
     environment:
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: testpswd
-      POSTGRES_DB: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: keeper
     volumes:
       - ./data:/var/lib/postgresql/data
+      - ./initdb:/docker-entrypoint-initdb.d
+    network_mode: host

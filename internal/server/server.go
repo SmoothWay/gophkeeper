@@ -28,6 +28,7 @@ func Run(log *slog.Logger, cfg *config.Config) {
 
 	http.HandleFunc("/ws", h.Handle)
 
+	log.Info("Starting server", slog.String("port", cfg.WS.Address))
 	err = http.ListenAndServeTLS(cfg.WS.Address, cfg.CertFile, cfg.KeyFile, nil)
 	if err != nil {
 		panic(err)

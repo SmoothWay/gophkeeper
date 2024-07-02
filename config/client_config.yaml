@@ -1,0 +1,5 @@
+storage_path: "./storage/client.db"
+ca_cert_file: "./keys/ca-cert.pem"
+grpc_address: ":44044"
+ws_url: "wss://localhost:4443/ws"
+query_timeout: 2s

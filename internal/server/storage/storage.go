@@ -19,11 +19,11 @@ func New(databaseURL string, timeout time.Duration) (*pgxpool.Pool, error) {
 
 	pool, err := pgxpool.New(newCtx, databaseURL)
 	if err != nil {
-		return nil, fmt.Errorf("init database error: %w", ErrInternal)
+		return nil, fmt.Errorf("init database error: %w", err)
 	}
 
 	if err = migrate(pool, 1); err != nil {
-		return nil, fmt.Errorf("migrate database error: %w", ErrInternal)
+		return nil, fmt.Errorf("migrate database error: %w", err)
 	}
 
 	return pool, nil

@@ -33,5 +33,5 @@ func main() {
 	sign := <-stop
 	log.Info("stopping application", slog.String("signal", sign.String()))
 	app.Stop()
-	log.Info("application stopped")
+	log.Info("application stopped!")
 }

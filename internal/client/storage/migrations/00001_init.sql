@@ -1,3 +1,4 @@
+-- +goose Up
 CREATE TABLE IF NOT EXISTS credentials
 (
     id                 INTEGER PRIMARY KEY,
@@ -38,3 +39,10 @@ CREATE TABLE IF NOT EXISTS card
     comment            TEXT,
     created_at         INTEGER
 );
+
+
+-- +goose Down
+DROP TABLE credentials;
+DROP TABLE text;
+DROP TABLE binary;
+DROP TABLE card;

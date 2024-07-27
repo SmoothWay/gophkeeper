@@ -97,8 +97,7 @@ func (s *Keeper) ExtractDataFromFile(path string) (string, []byte, error) {
 	}
 	defer file.Close()
 
-	buf := []byte{}
-	buf, err = io.ReadAll(file)
+	buf, err := io.ReadAll(file)
 	if err != nil {
 		log.Error("extract file error", logger.Err(err))
 		return "", nil, fmt.Errorf("%s: %w", op, ErrExtractFile)

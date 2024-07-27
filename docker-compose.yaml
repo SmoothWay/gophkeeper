@@ -1,0 +1,13 @@
+version: "3.8"
+
+services:
+  postgres:
+    image: postgres:14
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: keeper
+    volumes:
+      - ./data:/var/lib/postgresql/data
+      - ./initdb:/docker-entrypoint-initdb.d
+    network_mode: host

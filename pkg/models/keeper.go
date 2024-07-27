@@ -38,7 +38,7 @@ type Binary struct {
 	Type    ItemType `json:"type"`
 	Tag     string   `json:"tag"`
 	Key     string   `json:"key"`
-	Value   string   `json:"value"`
+	Value   []byte   `json:"value"`
 	Comment string   `json:"comment"`
 	Created int64    `json:"created"`
 }
@@ -48,9 +48,9 @@ type Card struct {
 	Tag     string   `json:"tag"`
 	Number  string   `json:"number"`
 	Exp     string   `json:"exp"`
-	Cvv     string   `json:"cvv"`
 	Comment string   `json:"comment"`
 	Created int64    `json:"created"`
+	Cvv     int32    `json:"cvv"`
 }
 
 type Text struct {

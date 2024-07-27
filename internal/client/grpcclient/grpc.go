@@ -16,12 +16,7 @@ type GRPCClient struct {
 	client authv1.AuthClient
 }
 
-func NewGRPCClient(address string, caCertFile string) (*GRPCClient, error) {
-	// tlsCredentials, err := tls.LoadTLSCredentials(caCertFile)
-	// if err != nil {
-	// 	log.Fatal("cannot load TLS credentials ", err)
-	// }
-
+func NewGRPCClient(address string) (*GRPCClient, error) {
 	conn, err := grpc.NewClient(address, grpc.WithTransportCredentials(insecure.NewCredentials()))
 	if err != nil {
 		return nil, err
